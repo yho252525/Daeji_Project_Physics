@@ -2,7 +2,7 @@
  * Falling Box Visualization
  * by Yehho Shin
  * 
- * X velocity of A and B are same.
+ * B is vertically falling.
  * No inputs available.
  */
 
@@ -25,7 +25,7 @@ void setup() {
   lineY = height/2+height/4; //setting the y location of the ground : 3/4
   boxA = new PVector(0, lineY); //initializing coordinates
   boxB = new PVector(600, 100);
-  SetDropPoint();
+  SetDropPoint(); //calculating drop point
   
   frameRate(30);  //framerate : 30 per sec
 }
@@ -87,26 +87,23 @@ void PrintText() {
   }
 }
 
-void SetDropPoint(){
-  boxBheight = (boxA.y - mA*100/30) - (boxB.y);
-  dropPointX = boxB.x-(vA*frameRate*sqrt(boxBheight*2/g/frameRate));
-  println(boxBheight);
-  println(boxB.x);
-  println(vA*frameRate*sqrt(boxBheight*2/g/frameRate));
-  println(dropPointX);
-}
+/*SetDropPoint fuction - Calculating when to drop box B*/
 
+void SetDropPoint(){
+  boxBheight = (boxA.y - mA*100/30) - (boxB.y);  //calculating distance between A and B
+  dropPointX = boxB.x-(vA*frameRate*sqrt(boxBheight*2/g/frameRate)); //since t=sqrt(2h/g)
+}
 
 /*ManagePhysics fuction - Calculating energy, acceleration, velocity*/
 
 void ManagePhysics() {
-  boxBheight = (boxA.y - mA*100/30) - (boxB.y);
-  mvA=mA*vA;
-  mvB=mB*xvB;
+  boxBheight = (boxA.y - mA*100/30) - (boxB.y); //calculating distance between A and B
+  mvA=mA*vA;  //x momentum of A
+  mvB=mB*xvB;  //x momentum of B
   //boxA.y - mA*100/30<=boxB.y
   if (boxBheight<=0) {  //if collided
     if (collision==false) { //is first recording?
-      tempmvA = mvA;
+      tempmvA = mvA; //saving momentum to adjust speed
       ymaxVB = yvB;  //recording max y velocity
       impulse = ymaxVB*mB; //calculating impulse
       g = 0;  //make gravity 0
